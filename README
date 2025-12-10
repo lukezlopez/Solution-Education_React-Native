@@ -1,0 +1,155 @@
+🚀 *Solution Education*
+
+Solution Education é um aplicativo mobile desenvolvido em React Native para gestão de conteúdos educacionais, posts e usuários (professores e alunos).
+Professores podem criar, editar e gerenciar conteúdos, enquanto alunos podem visualizar informações de maneira simples e prática.
+
+=====================================================================================
+
+✨ *Funcionalidades*
+
+🔐 Autenticação de usuários
+
+👩‍🏫 Professores:
+
+Criar, editar e deletar posts.
+
+Gerenciar professores e alunos.
+
+Acesso ao painel administrativo e configurações.
+
+👨‍🎓 Alunos:
+
+Visualizar posts disponíveis.
+
+🔍 Busca de posts por título, autor ou conteúdo.
+
+📄 Formulários de criação/edição de usuários e posts.
+
+=====================================================================================
+
+🛠 *Tecnologias Utilizadas*
+
+Front-end: React Native (Expo)
+
+Back-end: Node.js / Express (API RESTful)
+
+Banco de dados: MongoDB (ou compatível com REST)
+
+Gerenciamento de estado: Context API (AuthContext)
+
+Comunicação com API: Axios
+
+Navegação: React Navigation
+
+=====================================================================================
+
+⚙️ *Instalação e Configuração*
+
+Clone o repositório:
+
+'git clone https://github.com/seu-usuario/solution-education.git'
+cd solution-education
+
+Instale as dependências:
+
+'npm install'
+
+Configure a API em api/api.js:
+
+baseURL: "http://10.0.2.2:3000/api" // ou endereço da sua API
+
+
+Inicie o servidor backend (caso use local):
+
+'npm run dev'
+
+
+Inicie o app:
+
+'npx expo start'
+
+=====================================================================================
+
+*Estrutura do Projeto*
+.
+├── api/                 # Configuração Axios e token
+├── components/          # Componentes reutilizáveis (PostCard, FloatingCreateButton)
+├── context/             # Contexto de autenticação
+├── navigation/          # Navegação e rotas
+├── screens/             # Telas da aplicação
+│   ├── Teachers/        # Formulário e lista de professores
+│   ├── Students/        # Formulário e lista de alunos
+│   ├── HomeScreen.jsx
+│   ├── LoginScreen.jsx
+│   ├── PostDetailsScreen.jsx
+│   ├── CreatePostScreen.jsx
+│   ├── EditPostScreen.jsx
+│   ├── AdminScreen.jsx
+│   └── Settings.jsx
+└── package.json
+
+====================================================================================
+
+🎮 *Como Usar*
+
+Abra o app no dispositivo ou emulador.
+
+Faça login com uma conta de professor ou aluno.
+
+Navegue pelas telas:
+
+Home: Visualização de posts.
+
+Create/Edit Post: Professores podem criar ou editar posts.
+
+Admin: Gerenciamento de professores e alunos.
+
+Settings: Acesso rápido às funcionalidades administrativas.
+
+Professores possuem botões flutuantes para criar posts e acessar configurações.
+
+=====================================================================================
+
+🔒 *Controle de Acesso*
+
+Professor: Acesso completo a posts e gerenciamento de usuários.
+
+Aluno: Apenas visualização de posts.
+
+O controle é feito via Context API (AuthContext) e verificação de role nas rotas (AppNavigator.js).
+
+=====================================================================================
+
+📝 *Desafios e Experiências*
+
+Durante o desenvolvimento, a equipe enfrentou e solucionou diversos desafios:
+
+✅ Implementação de controle de acesso por papéis.
+
+✅ Gerenciamento de formulários de criação e edição de usuários e posts.
+
+✅ Atualização dinâmica de listas após operações de CRUD.
+
+✅ Integração do front-end com API REST e gerenciamento de autenticação via token.
+
+✅ Criação de UI consistente e componentes reutilizáveis.
+
+====================================================================================
+
+🤝 *Contribuição*
+
+Fork este repositório.
+
+Crie sua branch: git checkout -b minha-feature.
+
+Faça alterações e commit: git commit -m "Minha feature".
+
+Envie para sua branch: git push origin minha-feature.
+
+Abra um Pull Request.
+
+====================================================================================
+
+📜 *Licença*
+
+Este projeto está licenciado sob a licença MIT.
