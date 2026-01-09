@@ -1,86 +1,107 @@
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    FlatList,
+    TouchableOpacity,
+    Alert,
+    StyleSheet
+} from "react-native";
 import { api } from "../../api/api";
 
 export default function TeachersListScreen({ navigation }) {
     const [teachers, setTeachers] = useState([]);
 
     async function loadTeachers() {
-        try {
-            const res = await api.get("/user?role=professor");
-            setTeachers(res.data);
-        } catch (err) {
-            console.log("Erro ao carregar professores:", err);
-        }
+        const res = await api.get("/user?role=professor");
+        setTeachers(res.data);
+    }
+
+    async function deleteTeacher(id) {
+        Alert.alert(
+            "Confirmar exclusão",
+            "Deseja realmente apagar este professor?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Apagar",
+                    style: "destructive",
+                    onPress: async () => {
+                        await api.delete(`/user/${id}`);
+                        loadTeachers();
+                    }
+                }
+            ]
+        );
     }
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", loadTeachers);
-        return unsubscribe;
-    }, [navigation]);
+        loadTeachers();
+    }, []);
+
+    function renderItem({ item }) {
+        return (
+            <View style={styles.card}>
+                <View style={styles.info}>
+                    <Text style={styles.name}>{item.name}</Text>
+                    <Text style={styles.email}>{item.email}</Text>
+                </View>
+
+                <View style={styles.actions}>
+                    <TouchableOpacity
+                        style={styles.editBtn}
+                        onPress={() =>
+                            navigation.navigate("TeacherForm", { id: item._id })
+                        }
+                    >
+                        <Text style={styles.btnText}>Editar</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.deleteBtn}
+                        onPress={() => deleteTeacher(item._id)}
+                    >
+                        <Text style={styles.deleteText}>🗑️</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={teachers}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("TeacherForm", { id: item._id })}
-                        style={styles.card}
-                    >
-                        <Text style={styles.name}>{item.name}</Text>
-                        <Text style={styles.email}>{item.email}</Text>
-                    </TouchableOpacity>
-                )}
-                contentContainerStyle={{ paddingBottom: 100 }}
-            />
-
-            <TouchableOpacity
-                onPress={() => navigation.navigate("TeacherForm")}
-                style={[styles.floatingButton, { backgroundColor: "#4F46E5" }]}
-            >
-                <Text style={styles.floatingButtonText}>+</Text>
-            </TouchableOpacity>
-        </View>
+        <FlatList
+            data={teachers}
+            keyExtractor={(item) => item._id}
+            renderItem={renderItem}
+            contentContainerStyle={{ padding: 16 }}
+        />
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: "#F9FAFB",
-    },
     card: {
-        padding: 15,
-        backgroundColor: "#fff",
+        backgroundColor: "#1e1e1e",
+        padding: 16,
+        borderRadius: 14,
         marginBottom: 12,
-        borderRadius: 12,
-        elevation: 3,
+        flexDirection: "row",
+        alignItems: "center"
     },
-    name: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#111827",
-        marginBottom: 4,
+    info: { flex: 1 },
+    name: { color: "#fff", fontWeight: "bold", fontSize: 16 },
+    email: { color: "#aaa", marginTop: 4 },
+    actions: { flexDirection: "row" },
+    editBtn: {
+        backgroundColor: "#3B82F6",
+        padding: 8,
+        borderRadius: 8,
+        marginRight: 8
     },
-    email: {
-        fontSize: 14,
-        color: "#6B7280",
+    deleteBtn: {
+        backgroundColor: "#EF4444",
+        padding: 8,
+        borderRadius: 8
     },
-    floatingButton: {
-        position: "absolute",
-        bottom: 20,
-        right: 20,
-        padding: 18,
-        borderRadius: 50,
-        elevation: 5,
-    },
-    floatingButtonText: {
-        color: "#fff",
-        fontWeight: "bold",
-        fontSize: 24,
-        textAlign: "center",
-    },
+    btnText: { color: "#fff", fontWeight: "bold" },
+    deleteText: { fontSize: 16 }
 });
